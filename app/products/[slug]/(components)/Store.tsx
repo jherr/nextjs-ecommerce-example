@@ -1,12 +1,14 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, useRef } from "react";
 import { create } from "zustand";
 
+type Review = {
+  id: number;
+  text: string;
+  name: string;
+};
+
 type StoreProps = {
-  reviews: {
-    id: number;
-    text: string;
-    name: string;
-  }[];
+  reviews: Review[];
 };
 
 type AddReviewAction = (
@@ -26,11 +28,13 @@ const createStore = ({
 }) =>
   create<
     StoreProps & {
+      slug: string;
       name: string;
       text: string;
       setName: (name: string) => void;
       setText: (text: string) => void;
       sendReview: () => void;
+      setReviews: (reviews: Review[]) => void;
     }
   >((set, get) => ({
     slug,
@@ -42,8 +46,9 @@ const createStore = ({
     setText: (text) => set({ text }),
     sendReview: async () => {
       await reviewAction(slug, get().name, get().text);
-      set({ name: "", text: "" });
+      set({ text: "" });
     },
+    setReviews: (reviews: Review[]) => set({ reviews }),
   }));
 
 // The context we use to store the zustand store hook
@@ -68,8 +73,15 @@ export function ReviewsContainer({
 }: ReviewsContainerProps & {
   children: React.ReactNode;
 }) {
-  const store = createStore({ slug, reviews, reviewAction });
+  const store = useRef(createStore({ slug, reviews, reviewAction }));
+  if (store.current.getState().slug !== slug) {
+    store.current = createStore({ slug, reviews, reviewAction });
+  } else {
+    store.current.getState().setReviews(reviews);
+  }
   return (
-    <StoreProvider.Provider value={store}>{children}</StoreProvider.Provider>
+    <StoreProvider.Provider value={store.current}>
+      {children}
+    </StoreProvider.Provider>
   );
 }
