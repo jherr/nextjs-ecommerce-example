@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { getProductBySlug } from "@/src/products";
+import { reviewAction } from "@/src/reviewAction";
 
 import Reviews from "./(components)/Reviews";
 
@@ -11,6 +12,7 @@ export default async function ProductById({
   params: { slug: string };
 }) {
   const { description, image, name, reviews } = await getProductBySlug(slug);
+
   return (
     <>
       <nav
@@ -35,7 +37,7 @@ export default async function ProductById({
               </svg>
             </div>
           </li>
-          <li className="text-sm">{name}</li>
+          <li className="text-sm text-black">{name}</li>
         </ol>
       </nav>
 
@@ -59,7 +61,7 @@ export default async function ProductById({
             </p>
           </div>
 
-          <Reviews slug={slug} reviews={reviews} />
+          <Reviews slug={slug} reviews={reviews} reviewAction={reviewAction} />
         </div>
       </div>
     </>

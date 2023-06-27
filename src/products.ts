@@ -157,7 +157,7 @@ const getMaxId = () =>
   );
 
 export const addReview = async (slug: string, text: string, name: string) =>
-  (await getProductBySlug(slug)).reviews.push({
+  (await getProductBySlug(slug)).reviews.unshift({
     id: getMaxId() + 1,
     text,
     name,
