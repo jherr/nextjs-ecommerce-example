@@ -57,7 +57,7 @@ const StoreProvider = createContext<ReturnType<typeof createStore> | null>(
 );
 
 // The hook we use to access the zustand store hook
-export const useStore = () => useContext(StoreProvider)!();
+export const useStore = () => useContext(StoreProvider)!;
 
 export type ReviewsContainerProps = StoreProps & {
   slug: string;

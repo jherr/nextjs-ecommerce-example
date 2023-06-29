@@ -1,9 +1,13 @@
 "use client";
 
+import { shallow } from "zustand/shallow";
 import { useStore, ReviewsContainer, ReviewsContainerProps } from "./Store";
 
 function Reviews() {
-  const { reviews, text, setText, name, setName, sendReview } = useStore();
+  const { reviews, text, setText, name, setName, sendReview } = useStore()(
+    (state) => state,
+    shallow
+  );
   return (
     <>
       <h2 className="text-lg font-bold text-gray-900 mt-6">Reviews</h2>

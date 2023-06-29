@@ -3,6 +3,8 @@ import Link from "next/link";
 
 import { getProductBySlug } from "@/src/products";
 import { reviewAction } from "@/src/reviewAction";
+import { AddToCartButton } from "@/app/(components)/Cart";
+import ProductsCarousel from "./(components)/ProductsCarousel";
 
 import Reviews from "./(components)/Reviews";
 
@@ -14,10 +16,10 @@ export default async function ProductById({
   const { description, image, name, reviews } = await getProductBySlug(slug);
 
   return (
-    <>
+    <div className="mb-10">
       <nav
         aria-label="Breadcrumb"
-        className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mb-5"
+        className="max-w-7xl px-4 sm:px-6 lg:px-8 mb-5"
       >
         <ol role="list" className="flex items-center space-x-4">
           <li>
@@ -61,9 +63,18 @@ export default async function ProductById({
             </p>
           </div>
 
+          <div className="flex justify-end mt-2">
+            <AddToCartButton />
+          </div>
+
           <Reviews slug={slug} reviews={reviews} reviewAction={reviewAction} />
         </div>
       </div>
-    </>
+
+      <h2 className="my-2 font-bold text-3xl text-black">Other Products</h2>
+
+      {/* @ts-expect-error Server Component */}
+      <ProductsCarousel excludeSlug={slug} />
+    </div>
   );
 }

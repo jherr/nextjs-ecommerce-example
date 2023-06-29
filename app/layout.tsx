@@ -1,6 +1,9 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
 
+import { CartContainer } from "./(components)/Cart";
+import Header from "./(components)/Header";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -14,12 +17,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <main className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-          {children}
-        </main>
-      </body>
-    </html>
+    <CartContainer>
+      <html lang="en">
+        <body className={inter.className}>
+          <main className="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+            <Header />
+            {children}
+          </main>
+        </body>
+      </html>
+    </CartContainer>
   );
 }
